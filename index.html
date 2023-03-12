@@ -1,16 +1,163 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Wormhole Transfer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wormhole File Transfer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; }
+
+        body { margin: 0; }
+
+        :root {
+            --background-color: #fff;
+            --primary-color: #27A7D8;
+        }
+
+        :root {
+            background-color: var(--background-color);
+            font-family: 'SF Hello', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            font-size: 125%;
+            color-scheme: light dark;
+            line-height: 1.5;
+        }
+        
+        body {
+            padding: 1rem;
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            min-height: 100vh;
+            grid-auto-columns: minmax(auto, 600px);
+            gap: 1.4rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration-style: dashed;
+        }
+
+        .link-button {
+            font-size: inherit;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            padding: .7rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+        }
+
+        .link-button:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--background-color), 0 0 0 3px var(--primary-color);
+        }
+
+        a,
+        button {
+            transition: opacity 125ms;
+        }
+
+        a:hover,
+        button:hover {
+            opacity: .7;
+        }
+
+        a:active,
+        button:active {
+            opacity: .9;
+        }
+
+        .footnote {
+            display: inline-block;
+            margin-top: .5rem;
+            font-size: .6rem;
+        }
+        
+        .code-snippet {
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+            margin-top: .5rem;
+        }
+
+        .code-snippet button {
+            border: none;
+            background: none;
+            padding: none;
+            cursor: pointer;
+        }
+
+        .code-snippet button svg {
+            width: 1rem;
+            aspect-ratio: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root { --background-color: #121212; }
+        }
+    </style>
 </head>
 <body>
-	<script type="module">
-		const hash = window.location.hash.slice(1)
-		if (hash.length > 0) {
-			window.location = `wormhole-transfer:${hash}`
-		}
-	</script>
+    <h1>Incoming File Transfer</h1>
+    
+    <div>
+        <a href="" class="link-button js-wormhole-uri">Open in App</a>
+        <span class="footnote">
+            This should happen automatically if <br />
+            a compatible app, such as <a href="https://github.com/bash/portl">Portal</a> is installed.</span>
+    </div>
+
+    <div>
+        You have received a file via the <a href="http://magic-wormhole.io/">Magic Wormhole</a> protocol.<br />
+        To download this file, you need to have a compatible app,
+        such as <a href="https://github.com/bash/portl">Portal</a> installed on your device.
+    </div>
+
+    <div>
+        To receive this file using the <a href="http://magic-wormhole.io/">Magic Wormhole CLI</a> run:
+        <div class="code-snippet">
+            <code>wormhole recv <span class="js-code"></span></code>
+            <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+        </div>
+    </div>
+
+    <div>
+        Or you can enter the following code in any compatible app:
+        <div class="code-snippet">
+            <code><span class="js-code"></span></code>
+            <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+        </div>
+    </div>
+
+    <script type="module">
+        onHashChange()
+
+        window.addEventListener('hashchange', () => onHashChange())
+        Array.from(document.querySelectorAll('.copy-button'))
+            .forEach(button => button.addEventListener('click', copyPreviousElementToClipboard))
+
+        function onHashChange() {
+            const uri = window.location.hash.slice(1)
+            const queryStartIndex = uri.indexOf('?')
+            const code = queryStartIndex == -1 ? uri : uri.slice(0, queryStartIndex)
+            const wormholeUri = `wormhole-transfer:${uri}`;
+
+            if (code.length > 0) {
+                Array.from(document.querySelectorAll('.js-code'))
+                    .forEach(element => element.textContent = code)
+                Array.from(document.querySelectorAll('.js-wormhole-uri'))
+                    .forEach(element => element.href = wormholeUri)
+                window.location = wormholeUri
+            }
+        }
+
+        function copyPreviousElementToClipboard(event) {
+            navigator.clipboard.writeText(event.currentTarget.previousElementSibling.textContent)
+        }
+    </script>
 </body>
 </html>

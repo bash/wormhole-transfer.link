@@ -265,17 +265,15 @@
             }
         }
 
-        const DISABLE_OPEN_AUTOMATICALLY = 'disable-open-automatically';
-
         function getOpenAutomatically() {
-            return window.localStorage.getItem(DISABLE_OPEN_AUTOMATICALLY) == null
+            return window.localStorage.getItem('disable-open-automatically') == null
         }
 
         function setOpenAutomatically(value) {
             if (value) {
-                window.localStorage.removeItem(DISABLE_OPEN_AUTOMATICALLY)
+                window.localStorage.removeItem('disable-open-automatically')
             } else {
-                window.localStorage.setItem(DISABLE_OPEN_AUTOMATICALLY, '')
+                window.localStorage.setItem('disable-open-automatically', '')
             }
         }
     </script>

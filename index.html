@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="-receive">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +14,10 @@
             --primary-color: #27A7D8;
         }
 
+        ._send {
+            --primary-color: #DB8400;
+        }
+
         :root {
             background-color: var(--background-color);
             font-family: 'SF Hello', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
@@ -21,8 +25,8 @@
             color-scheme: light dark;
             line-height: 1.5;
         }
-        
-        body {
+
+        main {
             padding: 1rem;
             display: grid;
             justify-content: center;
@@ -30,6 +34,10 @@
             min-height: 100vh;
             grid-auto-columns: minmax(auto, 600px);
             gap: 1.4rem;
+        }
+
+        code {
+            font-size: inherit;
         }
 
         a {
@@ -76,7 +84,12 @@
             margin-top: .5rem;
             font-size: .6rem;
         }
-        
+
+        .checkbox {
+            margin-bottom: .2rem;
+            display: block;
+        }
+
         .code-snippet {
             display: flex;
             align-items: center;
@@ -96,67 +109,174 @@
             aspect-ratio: 1;
         }
 
+        .github-link {
+            position: fixed;
+            color: inherit;
+            bottom: 1rem;
+            right: 1rem;
+            opacity: .3;
+        }
+
         @media (prefers-color-scheme: dark) {
             :root { --background-color: #121212; }
         }
     </style>
 </head>
 <body>
-    <h1>Incoming File Transfer</h1>
-    
-    <div>
-        <a href="" class="link-button js-wormhole-uri">Open in App</a>
-        <span class="footnote">
-            This should happen automatically if <br />
-            a compatible app, such as <a href="https://github.com/bash/portal">Portal</a> is installed.</span>
-    </div>
+    <main></main>
 
-    <div>
-        You have received a file via the <a href="http://magic-wormhole.io/">Magic Wormhole</a> protocol.<br />
-        To download this file, you need to have a compatible app,
-        such as <a href="https://github.com/bash/portal">Portal</a> installed on your device.
-    </div>
+    <a href="https://github.com/bash/wormhole-transfer.link" class="github-link">
+        <svg width="24" height="24" viewBox="0 0 24 24"><use href="github.svg#icon" /></svg>
+    </a>
 
-    <div>
-        To receive this file using the <a href="http://magic-wormhole.io/">Magic Wormhole CLI</a> run:
-        <div class="code-snippet">
-            <code>wormhole recv <span class="js-code"></span></code>
-            <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+    <template id="home">
+        <h1>wormhole-transfer.link</h1>
+        <p>
+            This website transforms HTTPS URLs to <a href="http://magic-wormhole.io/">Magic Wormhole</a>'s <code>wormhole-transfer:</code> URI protocol. <br />
+            <span class="footnote">Note that this website is not affiliated with the Magic Wormhole project.</span>
+        </p>
+    </template>
+
+    <template id="incoming-transfer">
+        <h1>Incoming File Transfer</h1>
+
+        <div>
+            <a href="" class="link-button js-wormhole-uri">Open in App</a>
+            <span class="footnote">
+                <label class="checkbox"><input type="checkbox" id="open-automatically"> Open automatically</label>
+                <span id="open-automatically-help">
+                    A compatible app, such as <a href="https://github.com/bash/portal">Portal</a> is automatically opened if installed.
+                </span>
+            </span>
         </div>
-    </div>
 
-    <div>
-        Or you can enter the following code in any compatible app:
-        <div class="code-snippet">
-            <code><span class="js-code"></span></code>
-            <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+        <div>
+            You have received a file via the <a href="http://magic-wormhole.io/">Magic Wormhole</a> protocol.<br />
+            To download this file, you need to have a compatible app,
+            such as <a href="https://github.com/bash/portal">Portal</a> installed on your device.
         </div>
-    </div>
+
+        <div>
+            To receive this file using the <a href="http://magic-wormhole.io/">Magic Wormhole CLI</a> run:
+            <div class="code-snippet">
+                <code>wormhole recv <span class="js-code"></span></code>
+                <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+            </div>
+        </div>
+
+        <div>
+            Or you can enter the following code in any compatible app:
+            <div class="code-snippet">
+                <code><span class="js-code"></span></code>
+                <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="outgoing-transfer">
+        <h1>Outgoing File Transfer</h1>
+
+        <div>
+            <a href="" class="link-button js-wormhole-uri">Open in App</a>
+            <span class="footnote">
+                <label class="checkbox"><input type="checkbox" id="open-automatically"> Open automatically</label>
+                <span id="open-automatically-help">
+                    A compatible app, such as <a href="https://github.com/bash/portal">Portal</a> is automatically opened if installed.
+                </span>
+            </span>
+        </div>
+
+        <div>
+            To send a file using the <a href="http://magic-wormhole.io/">Magic Wormhole CLI</a> run:
+            <div class="code-snippet">
+                <code>wormhole send --code <span class="js-code"></span> FILENAME</code>
+                <button class="copy-button" title="Copy to Clipboard"><svg width="24" height="24" viewBox="0 0 24 24"><use href="clipboard-copy.svg#icon" /></svg></button>
+            </div>
+        </div>
+    </template>
 
     <script type="module">
         onHashChange()
 
         window.addEventListener('hashchange', () => onHashChange())
-        Array.from(document.querySelectorAll('.copy-button'))
-            .forEach(button => button.addEventListener('click', copyPreviousElementToClipboard))
 
         function onHashChange() {
-            const uri = window.location.hash.slice(1)
-            const queryStartIndex = uri.indexOf('?')
-            const code = queryStartIndex == -1 ? uri : uri.slice(0, queryStartIndex)
-            const wormholeUri = `wormhole-transfer:${uri}`;
+            const { code, wormholeUri, role } = parseHash(window.location.hash)
+            const hasCode = code.length > 0
 
-            if (code.length > 0) {
-                Array.from(document.querySelectorAll('.js-code'))
-                    .forEach(element => element.textContent = code)
-                Array.from(document.querySelectorAll('.js-wormhole-uri'))
-                    .forEach(element => element.href = wormholeUri)
+            if (hasCode && role == 'leader') {
+                showTransfer('#outgoing-transfer', '_send', code, wormholeUri)
+            } else if (hasCode) {
+                showTransfer('#incoming-transfer', '_receive', code, wormholeUri)
+            } else {
+                useTemplate('#home')
+            }
+        }
+
+        function parseHash(input) {
+            const hash = input.slice(1)
+            const queryStartIndex = hash.indexOf('?')
+            const code = queryStartIndex == -1 ? hash : hash.slice(0, queryStartIndex)
+            const query = new URLSearchParams(queryStartIndex == -1 ? '' : hash.slice(queryStartIndex))
+            const wormholeUri = `wormhole-transfer:${hash}`;
+            return { code, wormholeUri, role: query.get('role') }
+        }
+
+        function showTransfer(templateSelector, className, code, wormholeUri) {
+            useTemplate(templateSelector, className)
+
+            Array.from(document.querySelectorAll('.js-code'))
+                .forEach(element => element.textContent = code)
+            Array.from(document.querySelectorAll('.js-wormhole-uri'))
+                .forEach(element => element.href = wormholeUri)
+            Array.from(document.querySelectorAll('.copy-button'))
+                .forEach(button => button.addEventListener('click', copyPreviousElementToClipboard))
+
+            bindOpenAutomatically()
+
+            if (getOpenAutomatically()) {
                 window.location = wormholeUri
             }
         }
 
+        function useTemplate(selector, className = '') {
+            const target = document.querySelector('main')
+            const template = document.querySelector(selector).content
+            Array.from(target.children).forEach(child => child.remove())
+            target.className = className
+            target.append(template.cloneNode(true))
+        }
+
         function copyPreviousElementToClipboard(event) {
             navigator.clipboard.writeText(event.currentTarget.previousElementSibling.textContent)
+        }
+
+        function bindOpenAutomatically() {
+            const checkbox = document.querySelector('#open-automatically')
+            const helpText = document.querySelector('#open-automatically-help')
+
+            checkbox.addEventListener('change', () => update(checkbox.checked))
+            update(getOpenAutomatically())
+
+            function update(enabled) {
+                checkbox.checked = enabled
+                helpText.hidden = !enabled
+                setOpenAutomatically(enabled)
+            }
+        }
+
+        const DISABLE_OPEN_AUTOMATICALLY = 'disable-open-automatically';
+
+        function getOpenAutomatically() {
+            return window.localStorage.getItem(DISABLE_OPEN_AUTOMATICALLY) == null
+        }
+
+        function setOpenAutomatically(value) {
+            if (value) {
+                window.localStorage.removeItem(DISABLE_OPEN_AUTOMATICALLY)
+            } else {
+                window.localStorage.setItem(DISABLE_OPEN_AUTOMATICALLY, '')
+            }
         }
     </script>
 </body>

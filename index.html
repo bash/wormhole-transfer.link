@@ -36,6 +36,14 @@
             gap: 1.4rem;
         }
 
+        /* Source: https://github.com/postcss/postcss-100vh-fix */
+        /* Avoid Chrome to see Safari hack */
+        @supports (-webkit-touch-callout: none) {
+            main {
+                min-height: -webkit-fill-available;
+            }
+        }
+
         code {
             font-size: inherit;
         }
